@@ -1,0 +1,317 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: radial-gradient(circle at center, #112233 0%, #050505 100%);
+    color: #fff;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+/* ====== Fondo: máscara de Anonymous ====== */
+.bg-mask {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.bg-mask img {
+    height: min(115vh, 135vw);
+    opacity: 0.16;
+    filter: drop-shadow(0 0 25px rgba(0, 255, 204, 0.6));
+    animation: respirar 6s ease-in-out infinite;
+    transition: filter 0.6s ease, opacity 0.6s ease;
+}
+
+/* Cuando el ataque descifra la contraseña, la máscara se tiñe de rojo */
+body:has(.attack-terminal.cracked) .bg-mask img {
+    opacity: 0.28;
+    filter: sepia(1) saturate(6) hue-rotate(-50deg) drop-shadow(0 0 30px rgba(255, 51, 102, 0.9));
+}
+
+@keyframes respirar {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.025); }
+}
+
+/* Líneas de escaneo tipo monitor CRT */
+.scanlines {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0) 0px,
+        rgba(0, 0, 0, 0) 2px,
+        rgba(0, 0, 0, 0.18) 3px
+    );
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+    background: rgba(10, 15, 25, 0.62);
+    backdrop-filter: blur(3px);
+    padding: 50px 40px;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 255, 204, 0.2);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(0, 255, 204, 0.05);
+    max-width: 720px;
+    width: 100%;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.branding {
+    color: #00ffcc;
+    font-weight: bold;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    text-transform: uppercase;
+    text-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+}
+
+h1 {
+    margin-bottom: 10px;
+    font-size: 2.5em;
+    color: #ffffff;
+    letter-spacing: 1px;
+}
+
+p.subtitle {
+    margin-bottom: 30px;
+    color: #8892b0;
+    font-size: 1.1em;
+}
+
+/* ====== Input ====== */
+.input-group {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    padding: 20px 60px 20px 20px;
+    font-size: 1.8em;
+    border: 2px solid #233554;
+    border-radius: 8px;
+    text-align: center;
+    outline: none;
+    background: rgba(0, 0, 0, 0.6);
+    color: #00ffcc;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    letter-spacing: 5px;
+}
+
+input:focus {
+    border-color: #00ffcc;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+}
+
+.icon-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #8892b0;
+    font-size: 1.4em;
+    cursor: pointer;
+    transition: color 0.3s, text-shadow 0.3s;
+    outline: none;
+    line-height: 1;
+}
+
+.clear-btn { right: 15px; }
+.clear-btn:hover { color: #ff3366; text-shadow: 0 0 10px rgba(255, 51, 102, 0.6); }
+
+/* ====== Chips de charset ====== */
+.charset-chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.chip {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid #233554;
+    background: rgba(0, 0, 0, 0.4);
+    color: #44506b;
+    font-size: 0.95em;
+    transition: all 0.25s ease;
+    opacity: 0.55;
+}
+
+.chip.on {
+    color: #00ffcc;
+    border-color: #00ffcc;
+    opacity: 1;
+    box-shadow: 0 0 12px rgba(0, 255, 204, 0.4);
+    text-shadow: 0 0 8px rgba(0, 255, 204, 0.6);
+}
+
+.chip-info {
+    color: #8892b0;
+    opacity: 1;
+    border-style: dashed;
+}
+
+.chip-info strong { color: #ffde59; }
+
+/* ====== Terminal de ataque ====== */
+.attack-terminal {
+    text-align: left;
+    background: rgba(0, 0, 0, 0.55);
+    border: 1px solid #233554;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 25px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.attack-terminal.active {
+    border-color: #ffde59;
+    box-shadow: 0 0 20px rgba(255, 222, 89, 0.25);
+}
+
+.attack-terminal.cracked {
+    border-color: #ff3366;
+    box-shadow: 0 0 25px rgba(255, 51, 102, 0.45);
+    animation: alertaRoja 1.2s infinite;
+}
+
+.attack-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+.attack-status { color: #8892b0; letter-spacing: 1px; }
+.attack-status.run  { color: #ffde59; text-shadow: 0 0 8px rgba(255, 222, 89, 0.6); }
+.attack-status.hit  { color: #ff3366; text-shadow: 0 0 8px rgba(255, 51, 102, 0.6); }
+.attack-status.fail { color: #00ffcc; text-shadow: 0 0 8px rgba(0, 255, 204, 0.6); }
+
+.attack-speed { color: #44506b; }
+
+.attack-stream {
+    color: #00ffcc;
+    font-size: 1.1em;
+    min-height: 1.4em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.attack-stream strong { color: #ff3366; }
+
+.attack-counter {
+    margin-top: 8px;
+    color: #8892b0;
+    font-size: 0.9em;
+}
+
+.attack-counter span { color: #ffde59; }
+
+/* ====== Barra de progreso ====== */
+.progress-container {
+    width: 100%;
+    height: 12px;
+    background-color: #1a1a2e;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    border: 1px solid #233554;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.4s ease;
+}
+
+/* ====== Resultado ====== */
+#result {
+    font-size: 1.4em;
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.6;
+    padding: 15px;
+    border-radius: 8px;
+    background: rgba(0,0,0,0.3);
+}
+
+.cursor {
+    display: inline-block;
+    width: 12px;
+    height: 1.2em;
+    background-color: currentColor;
+    animation: blink 1s step-end infinite;
+    vertical-align: bottom;
+    margin-left: 5px;
+}
+
+@keyframes blink { 50% { opacity: 0; } }
+
+.texto-rojo { color: #ff3366 !important; text-shadow: 0 0 10px rgba(255, 51, 102, 0.6); }
+.texto-amarillo { color: #ffde59 !important; text-shadow: 0 0 10px rgba(255, 222, 89, 0.6); }
+.texto-verde { color: #00ffcc !important; text-shadow: 0 0 10px rgba(0, 255, 204, 0.6); }
+
+.bg-rojo { background-color: #ff3366 !important; box-shadow: 0 0 15px #ff3366; }
+.bg-amarillo { background-color: #ffde59 !important; box-shadow: 0 0 15px #ffde59; }
+.bg-verde { background-color: #00ffcc !important; box-shadow: 0 0 15px #00ffcc; }
+
+/* ====== Alerta inferior ====== */
+.match-display {
+    display: none;
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ff3366;
+    background: rgba(255, 51, 102, 0.1);
+    color: #ff3366;
+    border-radius: 8px;
+    font-size: 1.2em;
+    text-shadow: 0 0 10px rgba(255, 51, 102, 0.6);
+    animation: alertaRoja 1.5s infinite;
+}
+
+.match-display.visible { display: block; }
+
+@keyframes alertaRoja {
+    0% { box-shadow: 0 0 5px rgba(255, 51, 102, 0.2); }
+    50% { box-shadow: 0 0 20px rgba(255, 51, 102, 0.8); }
+    100% { box-shadow: 0 0 5px rgba(255, 51, 102, 0.2); }
+}
+
+/* ====== Pantallas pequeñas ====== */
+@media (max-width: 600px) {
+    .container { padding: 30px 20px; }
+    h1 { font-size: 1.8em; }
+    input[type="password"], input[type="text"] { font-size: 1.3em; padding: 16px 55px 16px 15px; }
+}

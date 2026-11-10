@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Descifrado - Proyecto UC Fest</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Fondo: máscara de Anonymous
+         Imagen: "Guy fawkes mask by nacreouss" — Wikimedia Commons, CC BY-SA 4.0 -->
+    <div class="bg-mask" aria-hidden="true">
+        <img src="img/mascara-anonymous.png" alt="">
+    </div>
+    <div class="scanlines" aria-hidden="true"></div>
+    <div class="container">
+        <div class="branding">⚡ PROYECTO UC FEST ⚡</div>
+        <h1>Simulador de Descifrado</h1>
+        <p class="subtitle">Escribe una contraseña y observa un ataque de fuerza bruta en vivo.</p>
+
+        <div class="input-group">
+            <input type="password" id="passwordInput" placeholder=">_ escribe_tu_password" autocomplete="off" spellcheck="false">
+            <button id="clearBtn" class="icon-btn clear-btn" title="Limpiar campo">✕</button>
+        </div>
+
+        <!-- Desglose del espacio de caracteres: se encienden según lo que detecta -->
+        <div id="charsetChips" class="charset-chips">
+            <span class="chip" data-set="lower">abc</span>
+            <span class="chip" data-set="upper">ABC</span>
+            <span class="chip" data-set="number">123</span>
+            <span class="chip" data-set="symbol">#$%</span>
+            <span class="chip chip-info" data-set="length">len: <strong id="lenValue">0</strong></span>
+            <span class="chip chip-info" data-set="entropy">entropía: <strong id="entropyValue">0</strong> bits</span>
+        </div>
+
+        <!-- Terminal de ataque: aquí corre la simulación -->
+        <div id="attackTerminal" class="attack-terminal">
+            <div class="attack-header">
+                <span id="attackStatus" class="attack-status">⬤ EN ESPERA</span>
+                <span id="attackSpeed" class="attack-speed"></span>
+            </div>
+            <div id="attackStream" class="attack-stream">Esperando input...</div>
+            <div class="attack-counter">
+                Intentos: <span id="attackCount">0</span>
+            </div>
+        </div>
+
+        <div class="progress-container">
+            <div id="progressBar" class="progress-bar"></div>
+        </div>
+
+        <div id="result" class="terminal-text">Esperando input...</div>
+
+        <div id="matchDisplay" class="match-display"></div>
+    </div>
+
+    <!-- Base de 50.000 contraseñas reales filtradas (para el ataque por diccionario) -->
+    <script src="diccionario.js"></script>
+    <!-- Nombres y palabras comunes en español (para detectar claves basadas en nombres) -->
+    <script src="nombres.js"></script>
+    <!-- Celebridades, personajes, bandas, películas, series, videojuegos, Pokémon y equipos (Wikidata) -->
+    <script src="famosos.js"></script>
+    <!-- Librería estándar de la industria zxcvbn para análisis de patrones y fuerza -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
+    <!-- Tu script de lógica principal -->
+    <script src="script.js"></script>
+</body>
+</html>
